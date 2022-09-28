@@ -46,5 +46,14 @@ class PostsDAO:
             if post['pk'] == post_id:
                 return post
 
+    def load_comments(self):
+         with open("./data/comments.json", encoding="utf-8") as file:
+             return json.load(file)
 
-    # TODO: get_comments_by_post_id(post_id)
+    def get_comments_by_post_pk(self, post_pk):
+        comments = self.load_comments()
+        post_comments = [comment for comment in comments if comment["post_id"] == post_pk]
+        return post_comments
+
+
+

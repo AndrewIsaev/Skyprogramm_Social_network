@@ -28,6 +28,5 @@ def get_posts_by_query():
 @posts_blueprint.route('/posts/<int:post_id>', methods=['GET'])
 def get_post_by_post_id(post_id):
     post = posts_dao.get_by_pk(post_id)
-    # comments = get_comments_by_post_id(post_id)
-    # comments_count = len(comments)
-    return render_template('post.html', title=post_id, post=post)
+    comments = posts_dao.get_comments_by_post_pk(post_id)
+    return render_template('post.html', title=post_id, post=post, comments=comments)
