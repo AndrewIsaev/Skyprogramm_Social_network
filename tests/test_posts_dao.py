@@ -26,3 +26,6 @@ class TestPostsDAO:
     def test_get_by_pk_exeptions(self):
         with pytest.raises(KeyError):
             posts.get_by_pk(1)[""]
+
+    def test_load_comments(self):
+        assert type(posts.load_comments()) == list

@@ -1,5 +1,5 @@
 import json
-
+import string
 
 class PostsDAO:
 
@@ -57,3 +57,24 @@ class PostsDAO:
 
 
 
+    def tag(self, pk):
+        post=self.get_by_pk(pk)
+        text=post["content"]
+        words = text.split()
+        marks = '''!()-[]{};?@$%:'"\,.^&;*_'''
+        tags_word = []
+        for index, word in enumerate(words):
+            if word.startswith("#"):
+                word = word.replace(word, f"<a href='/tag/{word}'>{word}</a>")
+                for i in word:
+                    if i in marks:
+                        word = word.replace(i, "")
+                        words[index] = word
+                tags_word.append(word)
+
+        return (" ").join(words)
+
+#
+# a=PostsDAO('./../../../data/posts.json')
+#
+# print(a.tag(1))

@@ -29,4 +29,8 @@ def get_posts_by_query():
 def get_post_by_post_id(post_id):
     post = posts_dao.get_by_pk(post_id)
     comments = posts_dao.get_comments_by_post_pk(post_id)
-    return render_template('post.html', title=post_id, post=post, comments=comments)
+    words = posts_dao.tag(post_id)
+    return render_template('post.html', title=post_id, post=post, comments=comments, word=words)
+
+
+
