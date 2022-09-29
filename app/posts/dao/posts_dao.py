@@ -1,5 +1,5 @@
 import json
-import string
+
 
 class PostsDAO:
 
@@ -47,34 +47,27 @@ class PostsDAO:
                 return post
 
     def load_comments(self):
-         with open("./data/comments.json", encoding="utf-8") as file:
-             return json.load(file)
+        with open("./data/comments.json", encoding="utf-8") as file:
+            return json.load(file)
 
     def get_comments_by_post_pk(self, post_pk):
         comments = self.load_comments()
         post_comments = [comment for comment in comments if comment["post_id"] == post_pk]
         return post_comments
 
-
-
-    def tag(self, pk):
-        post=self.get_by_pk(pk)
-        text=post["content"]
+    def tags_create(self, pk):
+        post = self.get_by_pk(pk)
+        text = post["content"]
         words = text.split()
-        marks = '''!()-[]{};?@$%:'"\,.^&;*_'''
-        tags_word = []
         for index, word in enumerate(words):
             if word.startswith("#"):
-                word = word.replace(word, f"<a href='/tag/{word}'>{word}</a>")
-                for i in word:
-                    if i in marks:
-                        word = word.replace(i, "")
-                        words[index] = word
-                tags_word.append(word)
-
+                if word[1:].isalpha():
+                    word = word[1:]
+                    word = word.replace(word, f"<a href='/tag/{word}'>#{word}</a>")
+                    words[index] = word
+                else:
+                    sym = word[-1]
+                    word = word[1:-1]
+                    word = word.replace(word, f"<a href='/tag/{word}'>#{word}</a>")
+                    words[index] = word + sym
         return (" ").join(words)
-
-#
-# a=PostsDAO('./../../../data/posts.json')
-#
-# print(a.tag(1))

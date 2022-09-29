@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request
 from .dao.posts_dao import PostsDAO
 
-
 posts_blueprint = Blueprint('posts_blueprint', __name__, template_folder='templates')
 posts_dao = PostsDAO('./data/posts.json')
 
@@ -29,8 +28,12 @@ def get_posts_by_query():
 def get_post_by_post_id(post_id):
     post = posts_dao.get_by_pk(post_id)
     comments = posts_dao.get_comments_by_post_pk(post_id)
-    words = posts_dao.tag(post_id)
+    words = posts_dao.tags_create(post_id)
     return render_template('post.html', title=post_id, post=post, comments=comments, word=words)
 
 
-
+@posts_blueprint.route("/tag/<tag_name>")
+def page_tag(tag_name):
+    tag_name = "#" + tag_name
+    posts = posts_dao.search_for_posts(tag_name)
+    return render_template("tag.html", posts=posts, tag=tag_name)
