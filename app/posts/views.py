@@ -1,14 +1,17 @@
 from flask import Blueprint, render_template, request
-from .dao.posts_dao import PostsDAO
+from app.posts.dao.posts_dao import PostsDAO
+from app.bookmarks.dao.bookmarks_dao import BookmarksDAO
 
 posts_blueprint = Blueprint('posts_blueprint', __name__, template_folder='templates')
 posts_dao = PostsDAO('./data/posts.json')
+bookmarks_dao = BookmarksDAO('./data/bookmarks.json')
 
 
 @posts_blueprint.route('/')
 def main_page():
     posts: list[dict] = posts_dao.get_all()
-    return render_template('index.html', title='Main page', posts=posts)
+    bookmarks = bookmarks_dao.get_all_bookmarks()
+    return render_template('index.html', title='Main page', posts=posts, bookmarks=bookmarks)
 
 
 @posts_blueprint.route('/users/<user_name>', methods=['GET'])
@@ -37,3 +40,5 @@ def page_tag(tag_name):
     tag_name = "#" + tag_name
     posts = posts_dao.search_for_posts(tag_name)
     return render_template("tag.html", posts=posts, tag=tag_name)
+
+

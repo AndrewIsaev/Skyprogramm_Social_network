@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask
 from app.bookmarks.views import bookmarks_blueprint
 from app.posts.views import posts_blueprint
 from app.api.views import api_blueprint

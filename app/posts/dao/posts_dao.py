@@ -20,10 +20,9 @@ class PostsDAO:
         :return: list of posts with 'user_name'
         """
         posts = self.get_all()
-        user_posts = []
-        for post in posts:
-            if user_name == post['poster_name']:
-                user_posts.append(post)
+        user_posts = [post for post in posts if user_name == post['poster_name']]
+        if not user_posts:
+            raise ValueError("Нет такого пользователя")
         return user_posts
 
     def search_for_posts(self, query) -> list[dict]:
@@ -31,10 +30,7 @@ class PostsDAO:
         :return: list of posts, sorted by query
         """
         posts = self.get_all()
-        posts_by_query = []
-        for post in posts:
-            if query.lower() in post['content'].lower():
-                posts_by_query.append(post)
+        posts_by_query = [post for post in posts if query.lower() in post['content'].lower()]
         return posts_by_query
 
     def get_by_pk(self, post_id) -> dict:
@@ -47,12 +43,14 @@ class PostsDAO:
                 return post
 
     def load_comments(self):
-        with open("./data/comments.json", encoding="utf-8") as file:
+        with open("./../../../data/comments.json", encoding="utf-8") as file:
             return json.load(file)
 
     def get_comments_by_post_pk(self, post_pk):
         comments = self.load_comments()
         post_comments = [comment for comment in comments if comment["post_id"] == post_pk]
+        if not post_comments:
+            raise ValueError("У поста нет комментариев")
         return post_comments
 
     def tags_create(self, pk):

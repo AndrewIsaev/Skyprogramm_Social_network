@@ -29,3 +29,7 @@ class TestPostsDAO:
 
     def test_load_comments(self):
         assert type(posts.load_comments()) == list
+
+
+    def test_tags_create(self,):
+        pass
