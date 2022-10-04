@@ -15,9 +15,11 @@ class TestApi:
         assert type(response.json) == list, "Возвращает не список"
         assert type(response.json[0]) == dict
         for i in range(len(response.json)):
-            assert set(response.json[i].keys()) == set(valid_keys), "Неверный список ключей"
+            assert set(response.json[i].keys()) == set(
+                valid_keys), "Неверный список ключей"
 
     def test_api_posts_by_pk(self):
         response = app.test_client().get(f"/api/posts/1")
         assert type(response.json) == dict
-        assert set(response.json.keys()) == set(valid_keys), "Неверный список ключей"
+        assert set(response.json.keys()) == set(
+            valid_keys), "Неверный список ключей"
