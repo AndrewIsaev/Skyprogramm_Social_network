@@ -1,3 +1,5 @@
+import os.path
+
 from flask import Blueprint, render_template, request
 from app.posts.dao.posts_dao import PostsDAO
 from app.bookmarks.dao.bookmarks_dao import BookmarksDAO
@@ -5,8 +7,8 @@ from app.bookmarks.dao.bookmarks_dao import BookmarksDAO
 # Create post blueprint
 posts_blueprint = Blueprint('posts_blueprint', __name__,
                             template_folder='templates')
-posts_dao = PostsDAO('./data/posts.json')
-bookmarks_dao = BookmarksDAO('./data/bookmarks.json')
+posts_dao = PostsDAO(os.path.join("data", "posts.json"))
+bookmarks_dao = BookmarksDAO(os.path.join("data", "bookmarks.json"))
 
 
 # Create main page views
